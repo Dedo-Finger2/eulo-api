@@ -14,7 +14,8 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
