@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { object, string } from "yup";
+import { ValidationError, object, string } from "yup";
 import { queryDatabase } from "../utils/query.js";
 import { randomUUID } from "node:crypto";
 import { env } from "../utils/env.js";
@@ -8,52 +8,54 @@ import jwt from "jsonwebtoken";
 
 const registerUser = Router();
 
-registerUser.post("api/v1/users/register", async (request, response) => {
+registerUser.post("/api/v1/users/register", async (request, response) => {
   const requestBodySchema = object({
     name: string().required().min(3),
     email: string().email().required(),
   });
 
-  let publicId;
+  try {
+    const { name, email } = await requestBodySchema.validate(request.body);
 
-  const { name, email } = await requestBodySchema.validate(request.body);
+    let user = await queryDatabase(
+      `SELECT * FROM users WHERE email = '${email}'`,
+    );
 
-  const doesUserAlreadyExists = await queryDatabase(
-    `SELECT * FROM users WHERE email = '${email}'`,
-  )[0];
+    if (!user) {
+      const uuid = randomUUID();
 
-  if (!doesUserAlreadyExists) {
-    const uuid = randomUUID();
+      user = await queryDatabase(
+        `INSERT INTO users (public_id, name, email) VALUES ('${uuid}', '${name}', '${email}')`,
+      );
+    }
 
-    const createdUser = await queryDatabase(
-      `INSERT INTO users (public_id, name, email) VALUES ('${uuid}', '${name}', '${email}')`,
-    )[0];
+    const token = jwt.sign({ userId: user.publicId }, env.JWT_TOKEN, {
+      expiresIn: "5m",
+    });
 
-    publicId = createdUser.publicId;
+    const mailService = new MailtrapMailService();
+
+    await mailService.sendMail({
+      to: {
+        name,
+        address: email,
+      },
+      from: {
+        name: "EULO COMPANY",
+        address: "eulocompany@email.com",
+      },
+      subject: "System access link.",
+      html: `<a href='http://localhost:${env.SERVER_PORT}/api/v1/users/verify?token=${token}'>Access the website.</a>`,
+    });
+
+    return response.status(200).send({ message: "Check your email inbox." });
+  } catch (error) {
+    if (error instanceof ValidationError)
+      return response.status(401).send({ message: error.message });
+
+    console.log(error);
+    return response.status(500).send({ message: "Internal server error." });
   }
-
-  publicId = doesUserAlreadyExists.publicId;
-
-  const token = jwt.sign({ userId: publicId }, env.JWT_TOKEN, {
-    expiresIn: "5m",
-  });
-
-  const mailService = MailtrapMailService();
-
-  await mailService.sendMail({
-    to: {
-      name,
-      address: email,
-    },
-    from: {
-      name: "EULO COMPANY",
-      address: "eulocompany@email.com",
-    },
-    subject: "System access link.",
-    html: `<a href='http://localhost:${env.SERVER_PORT}/api/v1/users/verify?token=${token}'>Access the website.</a>`,
-  });
-
-  return response.status(200).send({ message: "Check your email inbox." });
 });
 
 export { registerUser };
