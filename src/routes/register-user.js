@@ -17,9 +17,9 @@ registerUser.post("/api/v1/users/register", async (request, response) => {
   try {
     const { name, email } = await requestBodySchema.validate(request.body);
 
-    let user = await queryDatabase(
-      `SELECT * FROM users WHERE email = '${email}'`,
-    );
+    let user = await queryDatabase(`SELECT * FROM users WHERE email = $1`, [
+      email,
+    ]);
 
     if (user.length === 0) {
       const uuid = randomUUID();
@@ -30,7 +30,7 @@ registerUser.post("/api/v1/users/register", async (request, response) => {
       );
     }
 
-    const token = jwt.sign({ userId: user.publicId }, env.JWT_TOKEN, {
+    const token = jwt.sign({ userId: user[0].public_id }, env.JWT_TOKEN, {
       expiresIn: "5m",
     });
 
