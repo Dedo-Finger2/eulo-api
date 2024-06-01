@@ -21,11 +21,12 @@ registerUser.post("/api/v1/users/register", async (request, response) => {
       `SELECT * FROM users WHERE email = '${email}'`,
     );
 
-    if (!user) {
+    if (user.length === 0) {
       const uuid = randomUUID();
 
       user = await queryDatabase(
-        `INSERT INTO users (public_id, name, email) VALUES ('${uuid}', '${name}', '${email}')`,
+        `INSERT INTO users (public_id, name, email) VALUES ($1, $2, $3) RETURNING *`,
+        [uuid, name, email],
       );
     }
 
