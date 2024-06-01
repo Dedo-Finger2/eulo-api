@@ -52,7 +52,7 @@ registerUser.post("/api/v1/users/register", async (request, response) => {
     return response.status(200).send({ message: "Check your email inbox." });
   } catch (error) {
     if (error instanceof ValidationError)
-      return response.status(401).send({ message: error.message });
+      return response.status(400).send({ message: error.message });
 
     console.log(error);
     return response.status(500).send({ message: "Internal server error." });
