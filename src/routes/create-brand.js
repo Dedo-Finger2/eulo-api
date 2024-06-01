@@ -4,17 +4,18 @@ import { queryDatabase } from "../utils/query.js";
 import { randomUUID } from "node:crypto";
 import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 import { verifyAuthCookie } from "./middlewares/verify-auth-cookie.js";
+import { handleFileUploadMiddleware } from "../config/file-upload.js";
 
 const createBrand = Router();
 
 createBrand.post(
   "/api/v1/brands",
   verifyAuthCookie,
+  handleFileUploadMiddleware.single("brandImage"),
   async (request, response) => {
     const requestBodySchema = object({
       name: string().required().min(3),
       description: string().optional(),
-      image: string().optional(),
     });
 
     const cookiesSchema = object({
@@ -22,10 +23,13 @@ createBrand.post(
     });
 
     try {
-      const { name, description, image } = await requestBodySchema.validate(
+      const { name, description } = await requestBodySchema.validate(
         request.body,
       );
+      const brandImage = request.file;
       const { userId } = await cookiesSchema.validate(request.cookies);
+
+      console.log(brandImage.originalname);
 
       const doesBrandAlreadyExists = await queryDatabase(
         "SELECT * FROM brands WHERE name = $1",
@@ -40,8 +44,8 @@ createBrand.post(
       const publicId = randomUUID();
 
       const createdBrand = await queryDatabase(
-        "INSERT INTO brands (public_id, name, description, user_id, image) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [publicId, name, description, userId, image],
+        "INSERT INTO brands (public_id, name, description, user_id) VALUES ($1, $2, $3, $4) RETURNING *",
+        [publicId, name, description, userId],
       );
 
       if (!createdBrand)
