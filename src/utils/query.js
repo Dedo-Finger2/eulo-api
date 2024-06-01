@@ -1,11 +1,10 @@
 import { PostgreSqlConnection } from "../database/postgres.js";
 
-/** @param {string} sql  */
-export async function queryDatabase(sql) {
+export async function queryDatabase(sql, params = []) {
   try {
     const connection = await PostgreSqlConnection.getConnection();
 
-    const response = await connection.query(sql);
+    const response = await connection.query(sql, params);
 
     return sql.toUpperCase().startsWith("SELECT")
       ? response.rows
