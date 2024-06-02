@@ -49,6 +49,9 @@ updateBrand.put(
         [publicId],
       );
 
+      if (!selectedBrand || selectedBrand.length === 0)
+        return response.status(404).send({ message: "Brand not found." });
+
       const didAuthenticatedUserNotCreateTheBrand =
         selectedBrand[0].user_id !== userId;
 
