@@ -6,6 +6,7 @@ import { verifyUser } from "../routes/verify-user.js";
 import { createBrand } from "../routes/create-brand.js";
 import { updateBrand } from "../routes/update-brand.js";
 import { deleteBrand } from "../routes/delete-brand.js";
+import { createProductType } from "../routes/create-product-type.js";
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use(verifyUser);
 app.use(createBrand);
 app.use(updateBrand);
 app.use(deleteBrand);
+app.use(createProductType);
 
 export { app };
