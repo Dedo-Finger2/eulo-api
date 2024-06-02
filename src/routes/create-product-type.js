@@ -44,11 +44,9 @@ createProductType.post(
       );
 
       if (!createdProductType)
-        return response
-          .status(500)
-          .send({
-            message: "Error on creating a new productType. Try again later.",
-          });
+        return response.status(500).send({
+          message: "Error on creating a new productType. Try again later.",
+        });
 
       return response
         .status(201)
