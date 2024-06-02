@@ -13,6 +13,7 @@ import { createUnitType } from "../routes/create-unit-type.js";
 import { updateUnitType } from "../routes/update-unit-type.js";
 import { deleteUnitType } from "../routes/delete-unit-type.js";
 import { createProduct } from "../routes/create-product.js";
+import { getProduct } from "../routes/get-product.js";
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use(createUnitType);
 app.use(updateUnitType);
 app.use(deleteUnitType);
 app.use(createProduct);
+app.use(getProduct);
 
 export { app };
