@@ -44,8 +44,8 @@ getProduct.get(
 
       const finalProductStructure = {
         ...doesProductExists[0],
-        product_type: selectedProductProductType[0],
-        unit_type: selectedProductUnitType[0],
+        productType: selectedProductProductType[0],
+        unitType: selectedProductUnitType[0],
       };
 
       return response.status(200).send({ product: finalProductStructure });

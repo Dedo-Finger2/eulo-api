@@ -73,11 +73,9 @@ createProduct.post(
       console.log(createdProduct);
 
       if (!createProduct)
-        return response
-          .status(500)
-          .send({
-            message: "Error trying to create the product. Try again later.",
-          });
+        return response.status(500).send({
+          message: "Error trying to create the product. Try again later.",
+        });
 
       return response.status(201).send({ publicId: createdProduct.public_id });
     } catch (error) {
