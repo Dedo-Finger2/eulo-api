@@ -17,6 +17,7 @@ import { getProduct } from "../routes/get-product.js";
 import { getProducts } from "../routes/get-products.js";
 import { getProductPriceLog } from "../routes/get-product-price-log.js";
 import { updateProduct } from "../routes/update-product.js";
+import { deleteProduct } from "../routes/delete-product.js";
 
 const app = express();
 
@@ -39,5 +40,6 @@ app.use(getProduct);
 app.use(getProducts);
 app.use(getProductPriceLog);
 app.use(updateProduct);
+app.use(deleteProduct);
 
 export { app };
