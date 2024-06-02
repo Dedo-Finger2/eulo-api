@@ -3,6 +3,9 @@ import fs from "node:fs";
 const globalStoragePath = "src/storage";
 
 export function handleImageRenaming({ path, originalname }) {
+  if (!path || !originalname)
+    return { image: undefined, imageOriginalName: undefined };
+
   let newPath = path.split("/");
   newPath[2] = originalname;
   newPath = newPath.join("/");
