@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 import { verifyAuthCookie } from "./middlewares/verify-auth-cookie.js";
 import { handleFileUploadMiddleware } from "../config/file-upload.js";
+import { handleImageRenaming } from "../utils/handle-image-file-rename.js";
 
 const createBrand = Router();
 
@@ -29,7 +30,10 @@ createBrand.post(
       const brandImage = request.file;
       const { userId } = await cookiesSchema.validate(request.cookies);
 
-      console.log(brandImage.originalname);
+      const { image, imageOriginalName } = handleImageRenaming({
+        path: brandImage.path,
+        originalname: brandImage.originalname,
+      });
 
       const doesBrandAlreadyExists = await queryDatabase(
         "SELECT * FROM brands WHERE name = $1",
@@ -39,13 +43,11 @@ createBrand.post(
       if (doesBrandAlreadyExists.length > 0 && doesBrandAlreadyExists)
         return response.status(400).send({ message: "Name already in use." });
 
-      // TODO: Tratar upload de imagem se houver imagem
-
       const publicId = randomUUID();
 
       const createdBrand = await queryDatabase(
-        "INSERT INTO brands (public_id, name, description, user_id) VALUES ($1, $2, $3, $4) RETURNING *",
-        [publicId, name, description, userId],
+        "INSERT INTO brands (public_id, name, description, user_id, image, image_original_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        [publicId, name, description, userId, image, imageOriginalName],
       );
 
       if (!createdBrand)
