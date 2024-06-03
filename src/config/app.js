@@ -20,6 +20,7 @@ import { updateProduct } from "../routes/update-product.js";
 import { deleteProduct } from "../routes/delete-product.js";
 import { createStorage } from "../routes/create-storage.js";
 import { listProductsInStorage } from "../routes/list-products-in-storage.js";
+import { deleteStorage } from "../routes/delete-storage.js";
 
 const app = express();
 
@@ -45,5 +46,6 @@ app.use(updateProduct);
 app.use(deleteProduct);
 app.use(createStorage);
 app.use(listProductsInStorage);
+app.use(deleteStorage);
 
 export { app };
