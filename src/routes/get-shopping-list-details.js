@@ -31,14 +31,47 @@ getShoppingListDetails.get(
           .status(404)
           .send({ message: "Shopping List not found." });
 
-      // TODO: Implement the products inside the shopping list
-      // const shoppingListsProductsIds = await queryDatabase(`
-      //   SELECT product_id FROM shopping_lists WHERE shopping_list_id = $1
-      // `, [publicId]);
+      const storage = await queryDatabase(
+        "SELECT public_id FROM storages WHERE user_id = $1",
+        [userId],
+      );
 
-      // console.log(shoppingListsProductsIds);
+      if (!storage[0])
+        return response
+          .status(401)
+          .send({ message: "User does not have a storage." });
 
-      return response.status(200).send({ shoppingList: shoppingList[0] });
+      const shoppingListProductsPublicIds = await queryDatabase(
+        "SELECT product_id FROM shopping_list_products WHERE shopping_list_id = $1",
+        [publicId],
+      );
+
+      const products = await Promise.all(
+        shoppingListProductsPublicIds.map(async (product) => {
+          const productData = await queryDatabase(
+            "SELECT * FROM products WHERE public_id = $1",
+            [product.product_id],
+          );
+
+          const productDataInStorage = await queryDatabase(
+            "SELECT quantity, status FROM storage_products WHERE storage_id = $1 AND product_id = $2",
+            [storage[0].public_id, product.product_id],
+          );
+
+          return {
+            ...productData[0],
+            status: productDataInStorage[0]?.status ?? undefined,
+            quantityInStorage: productDataInStorage[0]?.quantity ?? undefined,
+          };
+        }),
+      );
+
+      const finalShoppingList = {
+        ...shoppingList[0],
+        products: [...products],
+      };
+
+      return response.status(200).send({ shoppingList: finalShoppingList });
     } catch (error) {
       const { statusCode, message } = handleHttpResponseErrors(error);
 
