@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
 
 import { registerUser } from "../routes/register-user.js";
 import { verifyUser } from "../routes/verify-user.js";
@@ -36,10 +38,29 @@ import { removeProductFromShoppingList } from "../routes/remove-product-from-sho
 import { deleteShoppingList } from "../routes/delete-shopping-list.js";
 
 const app = express();
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Eulo Api",
+      version: "1.0.0",
+      description: "eulo-api-desc.",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080",
+      },
+    ],
+  },
+  apis: ["./src/routes/*.js"],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(autoCreateShoppingList);
 app.use(registerUser);
