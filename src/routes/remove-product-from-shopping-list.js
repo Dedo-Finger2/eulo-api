@@ -40,11 +40,9 @@ removeProductFromShoppingList.patch(
       );
 
       if (isShoppingListCompleted[0])
-        return response
-          .status(400)
-          .send({
-            message: "Cannot remove product from completed shopping list.",
-          });
+        return response.status(400).send({
+          message: "Cannot remove product from completed shopping list.",
+        });
 
       const product = await queryDatabase(
         "SELECT * FROM products WHERE public_id = $1 AND user_id = $2",
