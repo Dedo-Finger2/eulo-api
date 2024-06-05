@@ -35,11 +35,9 @@ deleteStorage.delete(
       );
 
       if (productsInStorage.length > 0)
-        return response
-          .status(400)
-          .send({
-            message: `You cannot delete this storage: ${productsInStorage.length} products found.`,
-          });
+        return response.status(400).send({
+          message: `You cannot delete this storage: ${productsInStorage.length} products found.`,
+        });
 
       await queryDatabase(
         "DELETE FROM storages WHERE public_id = $1 AND user_id = $2",

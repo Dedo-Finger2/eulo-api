@@ -55,12 +55,9 @@ deleteProduct.delete(
       );
 
       if (isProductInUncompletedShoppingList.length > 0)
-        return response
-          .status(400)
-          .send({
-            message:
-              "Cannot delete this product: In uncompleted shopping list.",
-          });
+        return response.status(400).send({
+          message: "Cannot delete this product: In uncompleted shopping list.",
+        });
 
       // TODO: Test if the product is inside a completed shopping list if it will block the deletion
 
