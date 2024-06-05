@@ -24,6 +24,7 @@ import { deleteStorage } from "../routes/delete-storage.js";
 import { addProductsInStorage } from "../routes/add-products-to-storage.js";
 import { updateProductQuantityInStorage } from "../routes/update-product-quantity-in-storage.js";
 import { removeProductFromStorage } from "../routes/remove-product-from-storage.js";
+import { createShoppingList } from "../routes/create-shopping-list.js";
 
 const app = express();
 
@@ -53,5 +54,6 @@ app.use(deleteStorage);
 app.use(addProductsInStorage);
 app.use(updateProductQuantityInStorage);
 app.use(removeProductFromStorage);
+app.use(createShoppingList);
 
 export { app };
