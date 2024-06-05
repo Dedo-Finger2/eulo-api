@@ -32,6 +32,7 @@ import { printShoppingList } from "../routes/print-shopping-list.js";
 import { completeShoppingList } from "../routes/complete-shopping-list.js";
 import { autoCreateShoppingList } from "../routes/auto-create-shopping-list.js";
 import { removeProductFromShoppingList } from "../routes/remove-product-from-shopping-list.js";
+import { deleteShoppingList } from "../routes/delete-shopping-list.js";
 
 const app = express();
 
@@ -69,5 +70,6 @@ app.use(addProductsInShoppingList);
 app.use(printShoppingList);
 app.use(completeShoppingList);
 app.use(removeProductFromShoppingList);
+app.use(deleteShoppingList);
 
 export { app };
