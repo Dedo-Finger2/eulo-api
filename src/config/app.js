@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import { registerUser } from "../routes/register-user.js";
@@ -38,6 +39,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use(autoCreateShoppingList);
 app.use(registerUser);
