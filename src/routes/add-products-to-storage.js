@@ -80,7 +80,7 @@ addProductsInStorage.post(
           if (productWithoutBrand || productWithBrand) {
             let productStatus;
 
-            if (product.quantity >= productExists[0].min_quantity) {
+            if (product.quantity >= productExists[0].min_quantity + 1) {
               productStatus = "Fine";
             } else if (product.quantity === productExists[0].min_quantity) {
               productStatus = "Needs Attention";
