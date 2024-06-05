@@ -30,12 +30,14 @@ import { getShoppingListDetails } from "../routes/get-shopping-list-details.js";
 import { addProductsInShoppingList } from "../routes/add-products-to-shopping-list.js";
 import { printShoppingList } from "../routes/print-shopping-list.js";
 import { completeShoppingList } from "../routes/complete-shopping-list.js";
+import { autoCreateShoppingList } from "../routes/auto-create-shopping-list.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(autoCreateShoppingList);
 app.use(registerUser);
 app.use(verifyUser);
 app.use(createBrand);
