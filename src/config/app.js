@@ -27,6 +27,7 @@ import { removeProductFromStorage } from "../routes/remove-product-from-storage.
 import { createShoppingList } from "../routes/create-shopping-list.js";
 import { getShoppingLists } from "../routes/get-shopping-lists.js";
 import { getShoppingListDetails } from "../routes/get-shopping-list-details.js";
+import { addProductsInShoppingList } from "../routes/add-products-to-shopping-list.js";
 
 const app = express();
 
@@ -59,5 +60,6 @@ app.use(removeProductFromStorage);
 app.use(createShoppingList);
 app.use(getShoppingLists);
 app.use(getShoppingListDetails);
+app.use(addProductsInShoppingList);
 
 export { app };
