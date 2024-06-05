@@ -28,6 +28,7 @@ import { createShoppingList } from "../routes/create-shopping-list.js";
 import { getShoppingLists } from "../routes/get-shopping-lists.js";
 import { getShoppingListDetails } from "../routes/get-shopping-list-details.js";
 import { addProductsInShoppingList } from "../routes/add-products-to-shopping-list.js";
+import { printShoppingList } from "../routes/print-shopping-list.js";
 
 const app = express();
 
@@ -61,5 +62,6 @@ app.use(createShoppingList);
 app.use(getShoppingLists);
 app.use(getShoppingListDetails);
 app.use(addProductsInShoppingList);
+app.use(printShoppingList);
 
 export { app };
