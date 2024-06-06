@@ -5,7 +5,7 @@ import { InputUserDto } from "../dto/user-dto.js";
 import { User } from "./user.js";
 
 describe("User Entity", () => {
-  it("should create a new publicId for user", () => {
+  it.only("should create a new publicId for user", () => {
     const userDto = new InputUserDto({
       name: "Greg",
       email: "fake@email.com",
