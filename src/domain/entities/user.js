@@ -1,6 +1,8 @@
 import { InvalidEmailError } from "../../errors/invalid-email.js";
-import { InvalidUserNameLengthError } from "../../errors/invalid-user-name-length.js";
-import { MissingParameterError } from "../../errors/missing-parameter.js";
+import {
+  InvalidUserNameLengthError,
+  MissingParameterError,
+} from "../../errors";
 
 export class User {
   publicId;

@@ -1,4 +1,4 @@
-import { MissingParameterError } from "../../errors/missing-parameter";
+import { MissingParameterError } from "../../errors";
 
 export class InputUserDto {
   name;
