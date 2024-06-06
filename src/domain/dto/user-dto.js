@@ -29,7 +29,6 @@ export class OutputUserDto {
     if (!name) missingParams.push("name");
     if (!email) missingParams.push("email");
     if (!createdAt) missingParams.push("createdAt");
-    if (!updatedAt) missingParams.push("updatedAt");
 
     if (missingParams.length) {
       throw new MissingParameterError({ parameters: missingParams });
