@@ -1,9 +1,12 @@
 import nodemailer from "nodemailer";
+import { MailService } from "./mail";
+import { MissingParameterError } from "../errors/missing-parameter.js";
 
-export class MailtrapMailService {
+export class MailtrapMailService extends MailService {
   transporter;
 
   constructor() {
+    super();
     this.transporter = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
@@ -15,6 +18,8 @@ export class MailtrapMailService {
   }
 
   async sendMail(message) {
+    if (!message) throw new MissingParameterError({ parameters: ["message"] });
+
     await this.transporter.sendMail({
       to: {
         name: message.to.name,
