@@ -7,6 +7,63 @@ import jwt from "jsonwebtoken";
 const { TokenExpiredError } = jwt;
 const verifyUser = Router();
 
+/**
+ * @swagger
+ * /api/v1/users/verify:
+ *   get:
+ *     summary: Verify user token
+ *     description: Endpoint to verify user token and set a cookie with user ID
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         description: Token to verify user
+ *         required: true
+ *         type: string
+ *     responses:
+ *       302:
+ *         description: Redirect to home page
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Message with the home page URL
+ *       400:
+ *         description: Bad Request
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *       401:
+ *         description: Unauthorized
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *       404:
+ *         description: Not Found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ *       500:
+ *         description: Internal Server Error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               description: Error message
+ */
+
 verifyUser.get("/api/v1/users/verify", async (request, response) => {
   const requestQuerySchema = object({
     token: string().required(),
