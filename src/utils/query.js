@@ -1,4 +1,4 @@
-import { PostgreSqlConnection } from "../database/postgres.js";
+import { PostgreSqlConnection } from "../config/database/postgres.js";
 
 export async function queryDatabase(sql, params = []) {
   try {

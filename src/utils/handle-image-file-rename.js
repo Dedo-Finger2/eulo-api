@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-const globalStoragePath = "src/storage";
+const globalStoragePath = "public/storage";
 
 export function handleImageRenaming({ path, originalname }) {
   if (!path || !originalname)
