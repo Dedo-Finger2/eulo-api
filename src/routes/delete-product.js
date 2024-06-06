@@ -6,6 +6,34 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const deleteProduct = Router();
 
+/**
+ * @swagger
+ * /api/v1/products/{publicId}:
+ *   delete:
+ *     summary: Delete a product
+ *     description: Deletes a product owned by the authenticated user.
+ *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the product to be deleted.
+ *     responses:
+ *       200:
+ *         description: Product successfully deleted.
+ *       400:
+ *         description: Cannot delete the product because it is in storage or uncompleted shopping list.
+ *       404:
+ *         description: Product not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteProduct.delete(
   "/api/v1/products/:publicId",
   verifyAuthCookie,

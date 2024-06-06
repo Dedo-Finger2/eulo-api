@@ -7,6 +7,55 @@ import { randomUUID } from "node:crypto";
 
 const addProductsInShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}:
+ *   post:
+ *     summary: Add products to a shopping list
+ *     description: Allows users to add products to a specific shopping list.
+ *     tags: [Shopping Lists]
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: The public ID of the shopping list.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               products:
+ *                 type: array
+ *                 minItems: 1
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     publicId:
+ *                       type: string
+ *                       format: uuid
+ *                       description: The public ID of the product.
+ *                       example: b6accf0c-f8d4-41e5-a684-0479a9d8d2a9
+ *                     brandId:
+ *                       type: string
+ *                       format: uuid
+ *                       description: The public ID of the brand (optional).
+ *                       example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *     responses:
+ *       200:
+ *         description: Products successfully added to the shopping list.
+ *       400:
+ *         description: Bad request. None of the products selected were valid.
+ *       404:
+ *         description: Shopping list not found or user does not have a storage.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 addProductsInShoppingList.post(
   "/api/v1/shopping-lists/:publicId",
   verifyAuthCookie,

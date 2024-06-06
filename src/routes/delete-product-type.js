@@ -6,6 +6,34 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const deleteProductType = Router();
 
+/**
+ * @swagger
+ * /api/v1/productTypes/{publicId}:
+ *   delete:
+ *     summary: Delete a product type
+ *     description: Deletes a product type owned by the authenticated user.
+ *     tags: [Product Types]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the product type to be deleted.
+ *     responses:
+ *       200:
+ *         description: Product type successfully deleted.
+ *       401:
+ *         description: Not authorized to delete the product type.
+ *       404:
+ *         description: Product type not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteProductType.delete(
   "/api/v1/productTypes/:publicId",
   verifyAuthCookie,

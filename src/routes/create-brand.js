@@ -9,6 +9,55 @@ import { handleImageRenaming } from "../utils/handle-image-file-rename.js";
 
 const createBrand = Router();
 
+/**
+ * @swagger
+ * /api/v1/brands:
+ *   post:
+ *     summary: Create a new brand
+ *     description: Creates a new brand with the provided name, description, and optional image.
+ *     tags: [Brands]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the brand.
+ *                 minLength: 3
+ *                 example: MyBrand
+ *               description:
+ *                 type: string
+ *                 description: The description of the brand.
+ *                 example: This is a description of my brand.
+ *               brandImage:
+ *                 type: string
+ *                 format: binary
+ *                 description: The image file of the brand.
+ *     responses:
+ *       201:
+ *         description: Brand successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The public ID of the created brand.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: Name already in use or invalid data provided.
+ *       500:
+ *         description: Error on creating a new brand. Try again later.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 createBrand.post(
   "/api/v1/brands",
   verifyAuthCookie,

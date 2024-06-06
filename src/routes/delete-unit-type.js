@@ -6,6 +6,34 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const deleteUnitType = Router();
 
+/**
+ * @swagger
+ * /api/v1/unitTypes/{publicId}:
+ *   delete:
+ *     summary: Delete a unit type
+ *     description: Deletes a unit type owned by the authenticated user if it is not being used.
+ *     tags: [Unit Types]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the unit type to be deleted.
+ *     responses:
+ *       200:
+ *         description: Unit type successfully deleted.
+ *       401:
+ *         description: Not authorized.
+ *       404:
+ *         description: Unit type not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteUnitType.delete(
   "/api/v1/unitTypes/:publicId",
   verifyAuthCookie,

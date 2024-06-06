@@ -6,6 +6,84 @@ import { queryDatabase } from "../utils/query.js";
 
 const getShoppingListDetails = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}:
+ *   get:
+ *     summary: Get details of a specific shopping list
+ *     description: Retrieves detailed information about a specific shopping list for the authenticated user.
+ *     tags: [Shopping Lists]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: The public ID of the shopping list
+ *     responses:
+ *       200:
+ *         description: Shopping list details successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 shoppingList:
+ *                   type: object
+ *                   properties:
+ *                     public_id:
+ *                       type: string
+ *                       format: uuid
+ *                     name:
+ *                       type: string
+ *                     description:
+ *                       type: string
+ *                     completed_at:
+ *                       type: string
+ *                       format: date-time
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                     updated_at:
+ *                       type: string
+ *                       format: date-time
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           public_id:
+ *                             type: string
+ *                             format: uuid
+ *                           name:
+ *                             type: string
+ *                           description:
+ *                             type: string
+ *                           min_quantity:
+ *                             type: number
+ *                           created_at:
+ *                             type: string
+ *                             format: date-time
+ *                           updated_at:
+ *                             type: string
+ *                             format: date-time
+ *                           status:
+ *                             type: string
+ *                             description: The status of the product in storage
+ *                           quantityInStorage:
+ *                             type: number
+ *                             description: The quantity of the product in storage
+ *       401:
+ *         description: User does not have a storage.
+ *       404:
+ *         description: Shopping List not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 getShoppingListDetails.get(
   "/api/v1/shopping-lists/:publicId",
   verifyAuthCookie,

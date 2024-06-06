@@ -6,6 +6,32 @@ import { queryDatabase } from "../utils/query.js";
 
 const deleteShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}:
+ *   delete:
+ *     summary: Delete a shopping list
+ *     description: Deletes a shopping list owned by the authenticated user.
+ *     tags: [Shopping Lists]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the shopping list to be deleted.
+ *     responses:
+ *       200:
+ *         description: Shopping list successfully deleted.
+ *       404:
+ *         description: Shopping list not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteShoppingList.delete(
   "/api/v1/shopping-lists/:publicId",
   verifyAuthCookie,

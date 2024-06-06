@@ -6,6 +6,85 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const updateProductQuantityInStorage = Router();
 
+/**
+ * @swagger
+ * /api/v1/storages/{publicId}/products/{productPublicId}/update-quantity:
+ *  patch:
+ *    summary: Update quantity of a product in storage
+ *    description: Update the quantity of a product in the storage and update its status based on predefined thresholds.
+ *    tags: [Storages]
+ *    parameters:
+ *      - in: path
+ *        name: publicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the storage
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: path
+ *        name: productPublicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the product
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: cookie
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The user's ID from the cookie
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              newQuantity:
+ *                type: number
+ *                format: integer
+ *                minimum: 1
+ *                description: The new quantity of the product in storage
+ *                example: 20
+ *    responses:
+ *      200:
+ *        description: Successfully updated the quantity of the product in storage.
+ *      400:
+ *        description: Bad request. Possible reasons -> product not found, product is not in storage.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Product not found."
+ *      404:
+ *        description: Not found. The storage was not found.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Storage not found."
+ *      500:
+ *        description: Internal server error.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error."
+ */
+
 updateProductQuantityInStorage.patch(
   "/api/v1/storages/:publicId/products/:productPublicId/update-quantity",
   verifyAuthCookie,

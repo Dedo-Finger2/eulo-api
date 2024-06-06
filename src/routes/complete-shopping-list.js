@@ -6,6 +6,67 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const completeShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}/complete:
+ *   patch:
+ *     summary: Complete a shopping list
+ *     description: Marks a shopping list as completed and updates the quantities and prices of products bought. Also updates the status of products in the user's storage.
+ *     tags: [Shopping Lists]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         description: The public ID of the shopping list to complete.
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *           example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productsBought:
+ *                 type: array
+ *                 description: An array of objects representing the products bought in this shopping list.
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     productId:
+ *                       type: string
+ *                       format: uuid
+ *                       description: The public ID of the product bought.
+ *                       example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *                     quantityBought:
+ *                       type: number
+ *                       description: The quantity of the product bought.
+ *                       example: 2
+ *                     pricePaidPerItem:
+ *                       type: number
+ *                       description: The price paid per item of the product.
+ *                       example: 10.99
+ *                     brandName:
+ *                       type: string
+ *                       description: The name of the brand of the product.
+ *                       example: MyBrand
+ *     responses:
+ *       204:
+ *         description: Shopping list successfully completed.
+ *       400:
+ *         description: Shopping list is already completed or provided data is invalid.
+ *       401:
+ *         description: User does not have a storage.
+ *       404:
+ *         description: Shopping list not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 completeShoppingList.patch(
   "/api/v1/shopping-lists/:publicId/complete",
   verifyAuthCookie,

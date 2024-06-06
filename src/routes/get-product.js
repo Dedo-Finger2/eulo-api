@@ -6,6 +6,93 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const getProduct = Router();
 
+/**
+ * @swagger
+ * /api/v1/products/{publicId}:
+ *   get:
+ *     summary: Get a product by public ID
+ *     description: Retrieves the details of a product owned by the authenticated user.
+ *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the product to retrieve.
+ *     responses:
+ *       200:
+ *         description: Product successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 product:
+ *                   type: object
+ *                   properties:
+ *                     public_id:
+ *                       type: string
+ *                       format: uuid
+ *                     name:
+ *                       type: string
+ *                     description:
+ *                       type: string
+ *                     min_quantity:
+ *                       type: number
+ *                     created_at:
+ *                       type: string
+ *                       format: date-time
+ *                     updated_at:
+ *                       type: string
+ *                       format: date-time
+ *                     productType:
+ *                       type: object
+ *                       properties:
+ *                         public_id:
+ *                           type: string
+ *                           format: uuid
+ *                         id:
+ *                           type: integer
+ *                         name:
+ *                           type: string
+ *                         description:
+ *                           type: string
+ *                         created_at:
+ *                           type: string
+ *                           format: date-time
+ *                         updated_at:
+ *                           type: string
+ *                           format: date-time
+ *                     unitType:
+ *                       type: object
+ *                       properties:
+ *                         public_id:
+ *                           type: string
+ *                           format: uuid
+ *                         id:
+ *                           type: integer
+ *                         name:
+ *                           type: string
+ *                         description:
+ *                           type: string
+ *                         created_at:
+ *                           type: string
+ *                           format: date-time
+ *                         updated_at:
+ *                           type: string
+ *                           format: date-time
+ *       401:
+ *         description: Not authorized.
+ *       404:
+ *         description: Product not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 getProduct.get(
   "/api/v1/products/:publicId",
   verifyAuthCookie,

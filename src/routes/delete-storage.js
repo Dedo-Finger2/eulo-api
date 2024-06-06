@@ -6,6 +6,34 @@ import { queryDatabase } from "../utils/query.js";
 
 const deleteStorage = Router();
 
+/**
+ * @swagger
+ * /api/v1/storages/{publicId}:
+ *   delete:
+ *     summary: Delete a storage
+ *     description: Deletes a storage owned by the authenticated user if it is empty.
+ *     tags: [Storages]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the storage to be deleted.
+ *     responses:
+ *       200:
+ *         description: Storage successfully deleted.
+ *       400:
+ *         description: Cannot delete storage -> products found inside.
+ *       404:
+ *         description: Storage not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteStorage.delete(
   "/api/v1/storages/:publicId",
   verifyAuthCookie,

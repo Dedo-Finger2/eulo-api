@@ -6,6 +6,65 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const removeProductFromShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}/products/{productPublicId}/remove:
+ *  patch:
+ *    summary: Remove a product from a shopping list
+ *    description: Remove a product from a shopping list if the shopping list is not completed.
+ *    tags: [Shopping Lists]
+ *    parameters:
+ *      - in: path
+ *        name: publicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the shopping list
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: path
+ *        name: productPublicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the product to be removed
+ *        example: c9b1d7fa-2c46-4ae8-a9ed-89d1d7fae8b9
+ *    responses:
+ *      200:
+ *        description: Successfully removed the product from the shopping list.
+ *      400:
+ *        description: Bad request. Either the shopping list is completed or the product is not in the shopping list.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Cannot remove product from completed shopping list or Product is not in shoppingList."
+ *      404:
+ *        description: Not found. Either the shopping list or the product was not found.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Shopping List not found or Product not found."
+ *      500:
+ *        description: Internal server error.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error."
+ */
+
 removeProductFromShoppingList.patch(
   "/api/v1/shopping-lists/:publicId/products/:productPublicId/remove",
   verifyAuthCookie,

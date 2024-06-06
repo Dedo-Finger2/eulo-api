@@ -7,6 +7,51 @@ import { verifyAuthCookie } from "./middlewares/verify-auth-cookie.js";
 
 const createProductType = Router();
 
+/**
+ * @swagger
+ * /api/v1/productTypes:
+ *   post:
+ *     summary: Create a new product type
+ *     description: Creates a new product type with the provided name and description.
+ *     tags: [Product Types]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the product type.
+ *                 minLength: 3
+ *                 example: Electronics
+ *               description:
+ *                 type: string
+ *                 description: The description of the product type.
+ *                 example: This is a description of the electronics product type.
+ *     responses:
+ *       201:
+ *         description: Product type successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The public ID of the created product type.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: Name already in use or invalid data provided.
+ *       500:
+ *         description: Error on creating a new product type. Try again later.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 createProductType.post(
   "/api/v1/productTypes",
   verifyAuthCookie,

@@ -7,6 +7,66 @@ import { verifyAuthCookie } from "./middlewares/verify-auth-cookie.js";
 
 const createProduct = Router();
 
+/**
+ * @swagger
+ * /api/v1/products:
+ *   post:
+ *     summary: Create a new product
+ *     description: Creates a new product with the provided name, description, product type ID, unit type ID, and minimum quantity.
+ *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the product.
+ *                 minLength: 3
+ *                 example: Laptop
+ *               description:
+ *                 type: string
+ *                 description: The description of the product.
+ *                 example: This is a description of the laptop product.
+ *               productTypeId:
+ *                 type: string
+ *                 description: The public ID of the product type associated with the product.
+ *                 format: uuid
+ *                 example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *               unitTypeId:
+ *                 type: string
+ *                 description: The public ID of the unit type associated with the product.
+ *                 format: uuid
+ *                 example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *               minQuantity:
+ *                 type: number
+ *                 description: The minimum quantity of the product.
+ *                 minimum: 1
+ *                 example: 5
+ *     responses:
+ *       201:
+ *         description: Product successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 publicId:
+ *                   type: string
+ *                   description: The public ID of the created product.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: Name already in use or invalid data provided.
+ *       500:
+ *         description: Error on creating a new product. Try again later.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 createProduct.post(
   "/api/v1/products",
   verifyAuthCookie,

@@ -6,6 +6,62 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const printShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/{publicId}/print:
+ *   get:
+ *     summary: Print shopping list details
+ *     description: Retrieves detailed information about a shopping list for printing purposes.
+ *     tags: [Shopping Lists]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: The public ID of the shopping list.
+ *     responses:
+ *       200:
+ *         description: Shopping list details retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 shoppingListId:
+ *                   type: string
+ *                   format: uuid
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       public_id:
+ *                         type: string
+ *                         format: uuid
+ *                       name:
+ *                         type: string
+ *                       productType:
+ *                         type: string
+ *                       unitType:
+ *                         type: string
+ *                       status:
+ *                         type: string
+ *                       quantityInStorage:
+ *                         type: number
+ *                       brandName:
+ *                         type: string
+ *       401:
+ *         description: User does not have a storage.
+ *       404:
+ *         description: Shopping list not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 printShoppingList.get(
   "/api/v1/shopping-lists/:publicId/print",
   verifyAuthCookie,

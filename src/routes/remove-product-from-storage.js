@@ -6,8 +6,67 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const removeProductFromStorage = Router();
 
+/**
+ * @swagger
+ * /api/v1/storages/{publicId}/products/{productPublicId}/remove:
+ *  patch:
+ *    summary: Remove a product from a storage
+ *    description: Remove a product from a user's storage.
+ *    tags: [Storages]
+ *    parameters:
+ *      - in: path
+ *        name: publicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the storage
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: path
+ *        name: productPublicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the product to be removed from the storage
+ *        example: c9b1d7fa-2c46-4ae8-a9ed-89d1d7fae8b9
+ *    responses:
+ *      200:
+ *        description: Successfully removed the product from the storage.
+ *      400:
+ *        description: Bad request. The product is not in the storage.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Product is not in storage."
+ *      404:
+ *        description: Not found. Either the storage or the product was not found.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Storage not found. or Product not found."
+ *      500:
+ *        description: Internal server error.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error."
+ */
+
 removeProductFromStorage.patch(
-  "/api/v1/storages/:publicId/products/:productPublicId/remove-product",
+  "/api/v1/storages/:publicId/products/:productPublicId/remove",
   verifyAuthCookie,
   async (request, response) => {
     const cookieSchema = object({

@@ -7,6 +7,37 @@ import { randomUUID } from "node:crypto";
 
 const createStorage = Router();
 
+/**
+ * @swagger
+ * /api/v1/storages:
+ *   post:
+ *     summary: Create a new storage
+ *     description: Creates a new storage for the authenticated user if they don't already have one.
+ *     tags: [Storages]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       201:
+ *         description: Storage successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 publicId:
+ *                   type: string
+ *                   description: The public ID of the created storage.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: You already have a storage.
+ *       500:
+ *         description: Error on creating a new storage. Try again later.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 createStorage.post(
   "/api/v1/storages",
   verifyAuthCookie,

@@ -7,6 +7,50 @@ import { verifyAuthCookie } from "./middlewares/verify-auth-cookie.js";
 
 const createUnitType = Router();
 
+/**
+ * @swagger
+ * /api/v1/unitTypes:
+ *   post:
+ *     summary: Create a new unit type
+ *     description: Creates a new unit type for the authenticated user.
+ *     tags: [Unit Types]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 minLength: 1
+ *                 maxLength: 4
+ *                 description: The name of the unit type.
+ *               description:
+ *                 type: string
+ *                 description: Optional description of the unit type.
+ *     responses:
+ *       201:
+ *         description: Unit type successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The public ID of the created unit type.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: Name already in use.
+ *       500:
+ *         description: Error on creating a new unit type. Try again later.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 createUnitType.post(
   "/api/v1/unitTypes",
   verifyAuthCookie,

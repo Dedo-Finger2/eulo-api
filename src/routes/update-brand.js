@@ -8,6 +8,104 @@ import { handleFileUploadMiddleware } from "../config/file-upload.js";
 
 const updateBrand = Router();
 
+/**
+ * @swagger
+ * /api/v1/brands/{publicId}:
+ *  put:
+ *    summary: Update a brand's details
+ *    description: Update the details of a brand including name, description, and image.
+ *    tags: [Brands]
+ *    parameters:
+ *      - in: path
+ *        name: publicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the brand to update
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: cookie
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The user's ID from the cookie
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *                minLength: 3
+ *                description: The new name of the brand
+ *                example: "Brand Name"
+ *              description:
+ *                type: string
+ *                description: The new description of the brand
+ *                example: "Brand Description"
+ *              brandImage:
+ *                type: string
+ *                format: binary
+ *                description: The new image for the brand
+ *    responses:
+ *      200:
+ *        description: Successfully updated the brand.
+ *      400:
+ *        description: Bad request. Possible reasons -> name already in use.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Name is already in use."
+ *      401:
+ *        description: Not authorized. The user is not authorized.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Not authorized."
+ *      403:
+ *        description: Forbidden. The action is not authorized for the user.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Action not authorized."
+ *      404:
+ *        description: Not found. The brand was not found.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Brand not found."
+ *      500:
+ *        description: Internal server error.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error."
+ */
+
 updateBrand.put(
   "/api/v1/brands/:publicId",
   [verifyAuthCookie, handleFileUploadMiddleware.single("brandImage")],

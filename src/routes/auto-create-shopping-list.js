@@ -7,6 +7,48 @@ import { randomUUID } from "node:crypto";
 
 const autoCreateShoppingList = Router();
 
+/**
+ * @swagger
+ * /api/v1/shopping-lists/auto-create:
+ *   post:
+ *     summary: Automatically create a shopping list
+ *     description: Automatically creates a shopping list based on products in the user's storage that need attention or are at risk.
+ *     tags: [Shopping Lists]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 format: uuid
+ *                 description: The public ID of the user.
+ *                 example: b6accf0c-f8d4-41e5-a684-0479a9d8d2a9
+ *     responses:
+ *       201:
+ *         description: Shopping list successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 publicId:
+ *                   type: string
+ *                   format: uuid
+ *                   description: The public ID of the newly created shopping list.
+ *                   example: d5b25c62-df2b-446e-ae4a-46e0907a0b64
+ *       400:
+ *         description: No products are in need at the moment.
+ *       404:
+ *         description: Storage not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 autoCreateShoppingList.post(
   "/api/v1/shopping-lists/auto-create",
   verifyAuthCookie,

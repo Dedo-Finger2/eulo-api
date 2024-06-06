@@ -6,6 +6,100 @@ import { queryDatabase } from "../utils/query.js";
 
 const updateProductType = Router();
 
+/**
+ * @swagger
+ * /api/v1/productTypes/{publicId}:
+ *  put:
+ *    summary: Update product type details
+ *    description: Update the details of a product type.
+ *    tags: [Product Types]
+ *    parameters:
+ *      - in: path
+ *        name: publicId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The public ID of the product type
+ *        example: d9b1d7fa-1c46-4ae8-a9ed-89d1d7fae8b9
+ *      - in: cookie
+ *        name: userId
+ *        schema:
+ *          type: string
+ *          format: uuid
+ *        required: true
+ *        description: The user's ID from the cookie
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *                minLength: 3
+ *                description: The updated name of the product type
+ *                example: "Fruit"
+ *              description:
+ *                type: string
+ *                description: The updated description of the product type
+ *                example: "Edible fruits"
+ *    responses:
+ *      200:
+ *        description: Successfully updated the product type details.
+ *      400:
+ *        description: Bad request. Possible reasons -> product type not found, name already in use.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "ProductType not found."
+ *      401:
+ *        description: Unauthorized. The user is not authorized to perform this action.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Not authorized."
+ *      403:
+ *        description: Forbidden. The user is not allowed to update the product type.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Action not authorized."
+ *      404:
+ *        description: Not found. The product type was not found.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "ProductType not found."
+ *      500:
+ *        description: Internal server error.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  example: "Internal server error."
+ */
+
 updateProductType.put(
   "/api/v1/productTypes/:publicId",
   verifyAuthCookie,

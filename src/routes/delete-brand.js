@@ -6,6 +6,34 @@ import { handleHttpResponseErrors } from "../utils/handle-response-return.js";
 
 const deleteBrand = Router();
 
+/**
+ * @swagger
+ * /api/v1/brands/{publicId}:
+ *   delete:
+ *     summary: Delete a brand
+ *     description: Deletes a brand owned by the authenticated user.
+ *     tags: [Brands]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: publicId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: The public ID of the brand to be deleted.
+ *     responses:
+ *       200:
+ *         description: Brand successfully deleted.
+ *       401:
+ *         description: Not authorized to delete the brand.
+ *       404:
+ *         description: Brand not found.
+ *       default:
+ *         description: Error processing the request.
+ */
+
 deleteBrand.delete(
   "/api/v1/brands/:publicId",
   verifyAuthCookie,
