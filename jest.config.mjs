@@ -5,15 +5,13 @@ import { defaults } from 'jest-config';
 const config = {
   coverageProvider: 'v8',
   transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest', // Transforma arquivos .js, .jsx, .ts, .tsx usando babel-jest
+    '^.+\\.[tj]sx?$': 'babel-jest',
   },
   testEnvironment: 'node',
-  moduleFileExtensions: [...defaults.moduleFileExtensions, 'js', 'jsx', 'ts', 'tsx'],
+  moduleFileExtensions: [...defaults.moduleFileExtensions, 'js', 'jsx'],
   transformIgnorePatterns: [
     '/node_modules/(?!(module-to-transform)/)',
   ],
-  // extensionsToTreatAsEsm: ['.js', '.jsx', '.ts', '.tsx'],
-  setupFiles: ['./jest.setup.js'],
 };
 
 export default config;
